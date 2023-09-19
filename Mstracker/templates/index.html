@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nome+da+Fonte">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo_mstracker.png') }}" />
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <title>Rastreamento de Objetos</title>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='icon_mstracker.png') }}" class="correioslogo">
+        <h1 class="nome">MsTracker</h1>
+    </header>    
+    <main>
+        <img src="{{ url_for('static', filename='boy_lupa.png') }}" class="backimage">
+        <div class="container_bt">
+            <div class="botao">
+                <a href="https://rastreamento.correios.com.br/app/index.php" target="_blank"><img src="{{ url_for('static', filename='icon_tracker.png') }}" class="icon"></a>
+                <a href="https://rastreamento.correios.com.br/app/index.php" target="_blank"><span>Rastrear</span></a>
+            </div>
+            <div class="botao">
+                <a href="https://www2.correios.com.br/encomendas/servicosonline/default.cfm?e=1003" target="_blank"><img src="{{ url_for('static', filename='icon_logrev.png') }}" class="icon"></a>
+                <a href="https://www2.correios.com.br/encomendas/servicosonline/default.cfm?e=1003" target="_blank"><span>Logistica&nbsp;Rev.</span></a>
+            </div>
+            <div class="botao">
+                <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank"><img src="{{ url_for('static', filename='icon_cep.png') }}" class="icon"></a>
+                <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank"><span>Buscar&nbsp;CEP</span></a>
+            </div>
+            <div class="botao">
+                <a href="https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Correios/SigepWeb" target="_blank"><img src="{{ url_for('static', filename='icon_pac.png') }}" class="icon"></a>
+                <a href="https://wiki-noc.prod.cloud.dnxbrasil.com.br/pt-br/vibe/Correios/SigepWeb" target="_blank"><span>Sigep</span></a>
+            </div>
+        </div>
+        <div class="container">
+            <h1 class="titulo">Acompanhar Objetos</h1>
+            <div class="line"></div>
+            <div class="search">
+                <form method="POST" action="/consultar">
+                    <input type="text" id="codigo_objeto" class="search-bar" name="codigo_objeto" placeholder="Código do Objeto" required>
+                    <input type="submit" value="🔎" class="search-button">
+                </form>
+                <form id="filter-form" action="/filtrar" method="POST">
+                    <select class="filtro" id="filter-select" name="filter-select">
+                        <option>Filtrar por periodo</option>
+                        <option value="last-week">Última Semana</option>
+                        <option value="last-month">Último Mês</option>
+                        <option value="all">Ultimo Ano</option>
+                    </select>
+                </form>                                            
+                <form method="GET" action="/atualizar-todos">
+                    <input type="submit" value="↻" class="btn-atualizar-todos">
+                </form>
+            </div>
+            <div class="tb">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código do Objeto</th>
+                            <th>Tipo</th>
+                            <th>Previsão Entrega</th>
+                            <th>Status/Evento</th>
+                            <th>Data evento</th>
+                            <th>Local evento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dado in dados %}
+                            <tr>
+                                <td>{{ dado[0] }}</td>
+                                <td>{{ dado[1] }}</td>
+                                <td>{{ dado[2] }}</td>                            
+                                <td>{{ dado[3] }}</td>
+                                <td class="data-evento">{{ dado[4] }}</td>
+                                <td>{{ dado[6] }} - {{ dado[5] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <img src="{{ url_for('static', filename='logowhite_vibe.png') }}" class="logo_vibe">
+        <p class="vibe_footer">Todos os direitos reservados</p>
+    </footer>
+</body>
+</html>
+
